@@ -1,0 +1,399 @@
+package provap3;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public  class Usuario {
+
+    protected String login;
+    protected String senha;
+    protected String nome;
+    protected String bio;
+    
+    protected ArrayList<Usuario> usuarios = new ArrayList<>();
+    protected ArrayList<Usuario> amigos = new ArrayList<>();
+    protected ArrayList<Usuario> amigosPendentes = new ArrayList<>();
+    protected ArrayList<Recado> recados = new ArrayList<>();
+    protected ArrayList<Recado> msgMuralPendente;
+    protected ArrayList<Recado> msgMural;
+     public Usuario(String login, String senha, String nome, String bio) {
+        this.setLogin(login);
+        this.setSenha(senha);
+        this.setNome(nome);
+        this.setBio(bio);
+        this.recados = new ArrayList<>();
+        this.amigos = new ArrayList<>();
+        this.amigosPendentes = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
+        this.mural = new ArrayList<>();
+    }
+
+    public ArrayList<Mural> getMural() {
+        return mural;
+    }
+
+    public ArrayList<Recado> getRecados() {
+        return recados;
+    }
+
+    public void setRecados(ArrayList<Recado> recados) {
+        this.recados = recados;
+    }
+
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(ArrayList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+     
+
+    public ArrayList<Usuario> getAmigosPendentes() {
+        return amigosPendentes;
+    }
+
+    public void setAmigosPendentes(ArrayList<Usuario> amigosPendentes) {
+        this.amigosPendentes = amigosPendentes;
+    }
+     
+    public Usuario(String login) {
+       
+        this.login = login;
+    }
+
+    public Usuario(String login, String senha) {
+        
+        this.login = login;
+        this.senha = senha;
+    }
+    
+    public Usuario(String login, String senha, String nome) {
+       
+        this.login = login;
+        this.senha = senha;
+        this.nome = nome;
+        
+        
+    }
+   public Usuario() {
+        this.mural = new ArrayList<>();
+
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+  
+    public String getLogin() {
+        return this.login;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getSenha() {
+        return this.senha;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getBio() {
+        return this.bio;
+    }
+
+    public ArrayList<Usuario> getAmigos() {
+        return amigos;
+    }
+
+    public void setAmigos(ArrayList<Usuario> amigos) {
+        this.amigos = amigos;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Usuario usuario = (Usuario) obj;
+
+        return getLogin().equals(usuario.getLogin());
+    }
+
+    @Override
+    public String toString() {
+        return "LOGIN: " + this.getLogin() + "\n"
+                + "NOME: " + this.getNome() + "\n"
+                + "BIOGRAFIA: " + this.getBio() + "\n"
+                + "AMIGOS: " + this.getAmigos().size() + "\n"
+                + "RECADOS: " + this.getRecados().size() + "\n";
+                + "MURAL" + this.getMural().size();
+        return null;
+
+    }
+
+    public void exibeLista(List<Usuario> usuarios) {
+        System.out.println(usuarios);
+    }
+
+    public void alterarUsuario(List<Usuario> usuarios) {
+        Scanner in = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
+        Scanner z = new Scanner(System.in);
+        System.out.println("Informe o login do usuário a ser alterado: ");
+        String login = in.nextLine();
+        Usuario c = new Usuario(login);
+        if (usuarios.contains(c)) {
+            int op;
+            System.out.println("1 - Alterar senha do usuário");
+            System.out.println("2 - Alterar nome do usuário");
+            System.out.println("3 - Adicionar biografia");
+            System.out.println("4 - Voltar ao menu");
+            op = in.nextInt();
+            switch (op) {
+                case 1:
+                    System.out.println("Informe a nova senha do usuário: ");
+                    String senhaEdit = in.nextLine();
+                    in.nextLine();
+                    editaSenha(usuarios, senhaEdit, c);
+                    break;
+                case 2:
+                    System.out.println("Informe o novo nome do usuário: ");
+                    String nomeEdit = entrada.nextLine();
+                    in.nextLine();
+                    editaNome(usuarios, nomeEdit, c);
+                    break;
+                case 3:
+                    System.out.println("Adicione o que desejar neste ponto: ");
+                    System.out.println("Ex: Apelido, GitHub, Hobbies e etc");
+                    String bio = z.nextLine();
+                    in.nextLine();
+                    adicionaBio(usuarios, bio, c);
+                    break;
+                case 4:
+                    System.out.println("Voltando ao menu...");
+                    break;
+                default:
+                    System.out.println("Comando inválido");
+            }
+        } else {
+            System.out.println("Usuario nao encontrado");
+        }
+    }
+
+    public void editaNome(List<Usuario> usuarios, String novoNome, Usuario usuario) {
+        Usuario edit;
+        edit = usuarios.get(usuarios.indexOf(usuario));
+        edit.setNome(novoNome);
+    }
+
+    public void editaSenha(List<Usuario> usuarios, String novaSenha, Usuario usuario) {
+        Usuario edit;
+        edit = usuarios.get(usuarios.indexOf(usuario));
+        edit.setSenha(novaSenha);
+    }
+
+    public void adicionaBio(List<Usuario> usuarios, String bio, Usuario usuario) {
+        Usuario edit;
+        edit = usuarios.get(usuarios.indexOf(usuario));
+        edit.setBio(bio);
+    }
+  public void enviarSolicitação(List<Usuario> usuarios){
+       Scanner z = new Scanner(System.in);
+       System.out.println("Informe o login do usuario a receber um convite:");
+       String login1 = z.nextLine();
+       Usuario usu = buscaUsuarioLogin(login1, usuarios);
+       if(usu != null) {
+           ArrayList<Usuario> amigosP = usu.getAmigosPendentes(); // usu é meu amigo que quero mandar convite, ex login de usu: 2
+           amigosP.add(this); //me adicionei na lista de amigos de usu
+           System.out.println("Convite enviado!");
+       }else{
+           System.out.println("Login inexistente");
+       }
+
+       }
+
+    public void aceitarSolicitaçao(Usuario usuario) {
+        ArrayList<Usuario> amigosP = this.getAmigosPendentes();
+        Scanner in = new Scanner(System.in);
+        System.out.println("SOLICITAÇÕES");
+        System.out.println(amigosP.size()); // ex: 10
+        System.out.println("Digite o login do usuário a ser adicionado: ");
+            String login = in.nextLine();
+            Usuario amigoEmPotencial = buscaUsuarioLogin(login, amigosP);
+            if(amigoEmPotencial != null){
+                amigos = this.getAmigos();
+                amigos.add(amigoEmPotencial);
+                amigosP.remove(amigoEmPotencial);
+                amigoEmPotencial.getAmigos().add(this); // this sou eu
+                System.out.println("Solicitação aceita");
+                System.out.println("Convite removido");
+            }else{
+                System.out.println("Login inexistente");
+            }
+
+        }
+
+
+public void exibeRecados(Usuario c){
+        System.out.println(c.getRecados());
+    }
+
+    public static void menuUsuario() {
+        System.out.println("BEM VINDO AO SEU PERFIL");
+        System.out.println("1 - EDITAR PERFIL/ADICIONAR ATRIBUTO AO PERFIL");
+        System.out.println("2 - ADICIONAR AMIGOS");
+        System.out.println("3 - ACEITAR SOLICITAÇÕES DE AMIZADE");
+        System.out.println("4 - ENVIAR RECADOS");
+        System.out.println("5 - EXIBIR RECADOS");
+        System.out.println("6 - EXIBIR MURAL");
+        System.out.println("7 - ENCERRAR SESSÃO");
+    }
+
+    public void criaConta(List<Usuario> usuarios) {
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Informe seu login: ");
+        String login = entrada.nextLine();
+        if (buscaUsuarioLogin(login,usuarios) == null) {
+            System.out.println("Digite sua senha: ");
+            String senha = entrada.nextLine();
+            System.out.println("Digite o seu nome: ");
+            String nome = entrada.nextLine();
+            if (nome.equals("")) {
+                Usuario convidado = new Usuario(login, senha, "Convidado", "Vazio");
+                usuarios.add(convidado);
+                System.out.println(convidado);
+
+            } else {
+                Usuario co = new Usuario(login, senha, nome, "Vazio");
+                usuarios.add(co);
+                System.out.println(co);
+            }
+        } else {
+            System.out.println("Login existente!");
+        }
+    }
+    public static Usuario buscaUsuarioLogin(String login, List<Usuario> usuarios) {
+        if (usuarios != null) {
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).login.equals(login)) {
+                    return usuarios.get(i);
+                }
+            }
+        }
+        return null;
+        
+
+    }
+    public static Usuario buscaUsuarioSenha(String senha, List<Usuario> usuarios) {
+        if (usuarios != null) {
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).senha.equals(senha)) {
+                    return usuarios.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Usuario acessaConta(Usuario cad, List<Usuario> usuarios) {
+        if (usuarios.contains((cad))) {
+            System.out.println("Acessando perfil...");
+            return cad;
+        } else {
+            return null; 
+        }
+    }
+   
+    public void contaAcessada( Usuario logado, List<Usuario> usuarios) {
+        Scanner in = new Scanner(System.in);
+        int op;
+        String meuLogin = logado.getLogin();
+        System.out.println(meuLogin);
+        do {
+            menuUsuario();
+            op = in.nextInt();
+            switch (op) {
+                case 1:
+                    alterarUsuario(usuarios);
+                    break;
+                case 2:
+                    enviarSolicitação(usuarios);
+                    break;
+                case 3:
+                     aceitarSolicitaçao(logado);
+                    break;
+                case 4:
+                     enviaRecados(usuarios);
+                    break;
+                case 5:
+                    exibeRecados(logado);
+                    break;
+                case 6: exibeMural (usuarios);
+                   break;
+            }
+        } while (op != 6);
+    }
+    public void enviaRecados(List<Usuario> usuarios){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Informe o login do usuário a receber uma mensagem: ");
+        String login = in.nextLine();
+        Usuario usu = buscaUsuarioLogin(login, usuarios);
+        if(usu != null){
+            System.out.println("Informe o recado que deseja enviar: ");
+            String recado = in.nextLine();
+            ArrayList<Recado> recados = usu.getRecados();
+            Recado rec = new Recado(recado, this.getLogin());
+            recados.add(rec);
+            System.out.println("Recado enviado!");
+        }else{
+            System.out.println("Login inválido");
+        }}
+          public void mensagemMural (List<Usuario> usuarios){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Informe o login do usuário a receber um mural: ");
+        String login = in.nextLine();
+        Usuario usu = buscaUsuarioLogin(login, usuarios);
+        if(usu != null){
+            System.out.println("Informe o mural que deseja enviar: ");
+            String mural = in.nextLine();
+            ArrayList<Mural> mural = usu.getMural();
+            Mural rec = new Mural(mural, this.getLogin());
+            Mural.add(rec);
+            System.out.println("Mural enviado!");
+        }else{
+            System.out.println("Login inválido");
+        }
+    }
+
+    private void exibeMural(List<Usuario> usuarios) {
+        System.out.println(.getMural());
+    }
+    
+ 
+
+
+}
+  // enviar/ aceitar e visualizar mensagem mural
+  // procurar login e mandar mensagem
+  // aceitar ou recusar mensagem 
+  // exibir mural
+
+// Novo tipo de mensagem, chamada Mural. Essa nova mensagem deve ser tratada como uma mensagem comum. 
+// Contudo, uma vez aceita pelo usuário que recebeu, ela pode ser vista por todos os outros usuários (mas não editada).
