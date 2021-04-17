@@ -1,0 +1,62 @@
+package provap3;
+
+
+import java.util.ArrayList;
+
+import java.util.Scanner;
+public class MenuPrincipalUnikut {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
+        int op;
+        Usuario c = new Usuario();
+      
+        ArrayList<Usuario> usuariosSistema = new ArrayList<>();
+      
+        do {
+            System.out.println("BEM VINDO");
+            System.out.println("1 - Criar");
+            System.out.println("2 - Acessar conta");
+            System.out.println("3 - Mural");
+            System.out.println("0 - Encerrar programa");
+            op = in.nextInt();
+            switch (op) {
+                case 1:
+                    c.criaConta(usuariosSistema);
+                    break;
+                 case 2:
+                    System.out.println("Informe o seu login para acessar sua conta: ");
+                    String login = entrada.nextLine();
+                    in.nextLine();
+                    System.out.println("Informe a sua senha para acessar sua conta: ");
+                    String senha = in.nextLine();
+                    Usuario cad = Usuario.buscaUsuarioLogin(login,usuariosSistema);
+                    if(cad == null){
+                        System.out.println("Login inválido");
+                    }else{
+                        if (cad.acessaConta(cad, usuariosSistema) != null) {
+                            cad.contaAcessada(cad, usuariosSistema);
+                        }else{
+                            System.out.println("erro");
+                    }
+
+                    }
+                    break;
+                case 3:
+                    
+            }
+
+
+        } while (op != 0);
+        System.out.println(usuariosSistema);
+       
+
+
+
+    }
+
+    
+
+    
+}
