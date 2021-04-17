@@ -29,8 +29,12 @@ public  class Usuario {
         this.mural = new ArrayList<>();
     }
 
-    public ArrayList<Mural> getMural() {
-        return mural;
+     public ArrayList<Recado> getmsgMuralPendente() {
+        return recados;
+    }
+     
+    public ArrayList<Recado> getmsgMural() {
+        return recados;
     }
 
     public ArrayList<Recado> getRecados() {
@@ -77,10 +81,7 @@ public  class Usuario {
         
         
     }
-   public Usuario() {
-        this.mural = new ArrayList<>();
-
-    }
+   
 
     public void setLogin(String login) {
         this.login = login;
