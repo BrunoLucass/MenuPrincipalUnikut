@@ -1,0 +1,33 @@
+package provap3;
+
+public class Recado {
+    private String texto;
+    private String emitente;
+    public Recado (String texto, String emitente){
+        this.texto = texto;
+        this.emitente = emitente;
+        
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public String getEmetente() {
+        return emitente;
+    }
+
+    public void setEmetente(String emitente) {
+        this.emitente = emitente;
+    }
+
+    @Override
+    public String toString() {
+        return   "MENSAGEM: " + texto + ", EMITENTE:" + emitente ;
+    }
+    
+}
