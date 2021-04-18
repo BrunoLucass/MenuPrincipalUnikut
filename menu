@@ -18,7 +18,7 @@ public class MenuPrincipalUnikut {
             System.out.println("BEM VINDO");
             System.out.println("1 - Criar");
             System.out.println("2 - Acessar conta");
-            System.out.println("3 - Mural");
+            System.out.println("3 - Recado");
             System.out.println("0 - Encerrar programa");
             op = in.nextInt();
             switch (op) {
