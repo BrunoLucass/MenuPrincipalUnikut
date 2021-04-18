@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public  class Usuario {
+public class Usuario {
 
     protected String login;
     protected String senha;
     protected String nome;
     protected String bio;
-    
+
     protected ArrayList<Usuario> usuarios = new ArrayList<>();
     protected ArrayList<Usuario> amigos = new ArrayList<>();
     protected ArrayList<Usuario> amigosPendentes = new ArrayList<>();
     protected ArrayList<Recado> recados = new ArrayList<>();
-    protected ArrayList<Recado> msgMuralPendente;
-    protected ArrayList<Recado> msgMural;
-    protected ArrayList<Recado> mensagemP;
-     public Usuario(String login, String senha, String nome, String bio) {
+    protected ArrayList<Recado> msgMuralPendente = new ArrayList<>();
+    protected ArrayList<Recado> msgMural = new ArrayList<>();
+
+    public Usuario(String login, String senha, String nome, String bio) {
         this.setLogin(login);
         this.setSenha(senha);
         this.setNome(nome);
@@ -27,17 +27,27 @@ public  class Usuario {
         this.amigos = new ArrayList<>();
         this.amigosPendentes = new ArrayList<>();
         this.usuarios = new ArrayList<>();
-        this.mural = new ArrayList<>();
+        this.msgMuralPendente = new ArrayList<>();
+        this.msgMural = new ArrayList<>();
     }
 
-    
-
-     public ArrayList<Recado> getMsgMuralPendente() {
-        return recados;
+    public Usuario() {
     }
-     
-    public ArrayList<Recado> getmsgMural() {
-        return recados;
+
+    public ArrayList<Recado> getMsgMuralPendente() {
+        return msgMuralPendente;
+    }
+
+    public void setMsgMuralPendente(ArrayList<Recado> msgMuralPendente) {
+        this.msgMuralPendente = msgMuralPendente;
+    }
+
+    public ArrayList<Recado> getMsgMural() {
+        return msgMural;
+    }
+
+    public void setMsgMural(ArrayList<Recado> msgMural) {
+        this.msgMural = msgMural;
     }
 
     public ArrayList<Recado> getRecados() {
@@ -55,7 +65,6 @@ public  class Usuario {
     public void setUsuarios(ArrayList<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-     
 
     public ArrayList<Usuario> getAmigosPendentes() {
         return amigosPendentes;
@@ -64,32 +73,30 @@ public  class Usuario {
     public void setAmigosPendentes(ArrayList<Usuario> amigosPendentes) {
         this.amigosPendentes = amigosPendentes;
     }
-     
+
     public Usuario(String login) {
-       
+
         this.login = login;
     }
 
     public Usuario(String login, String senha) {
-        
+
         this.login = login;
         this.senha = senha;
     }
-    
+
     public Usuario(String login, String senha, String nome) {
-       
+
         this.login = login;
         this.senha = senha;
         this.nome = nome;
-        
-        
+
     }
-   
 
     public void setLogin(String login) {
         this.login = login;
     }
-  
+
     public String getLogin() {
         return this.login;
     }
@@ -146,9 +153,7 @@ public  class Usuario {
                 + "NOME: " + this.getNome() + "\n"
                 + "BIOGRAFIA: " + this.getBio() + "\n"
                 + "AMIGOS: " + this.getAmigos().size() + "\n"
-                + "RECADOS: " + this.getRecados().size() + "\n";
-                + "MURAL" + this.getMural().size();
-        return null;
+                + "RECADOS: " + this.getRecados().size();
 
     }
 
@@ -218,20 +223,21 @@ public  class Usuario {
         edit = usuarios.get(usuarios.indexOf(usuario));
         edit.setBio(bio);
     }
-  public void enviarSolicitação(List<Usuario> usuarios){
-       Scanner z = new Scanner(System.in);
-       System.out.println("Informe o login do usuario a receber um convite:");
-       String login1 = z.nextLine();
-       Usuario usu = buscaUsuarioLogin(login1, usuarios);
-       if(usu != null) {
-           ArrayList<Usuario> amigosP = usu.getAmigosPendentes(); // usu é meu amigo que quero mandar convite, ex login de usu: 2
-           amigosP.add(this); //me adicionei na lista de amigos de usu
-           System.out.println("Convite enviado!");
-       }else{
-           System.out.println("Login inexistente");
-       }
 
-       }
+    public void enviarSolicitação(List<Usuario> usuarios) {
+        Scanner z = new Scanner(System.in);
+        System.out.println("Informe o login do usuario a receber um convite:");
+        String login1 = z.nextLine();
+        Usuario usu = buscaUsuarioLogin(login1, usuarios);
+        if (usu != null) {
+            ArrayList<Usuario> amigosP = usu.getAmigosPendentes(); // usu é meu amigo que quero mandar convite, ex login de usu: 2
+            amigosP.add(this); //me adicionei na lista de amigos de usu
+            System.out.println("Convite enviado!");
+        } else {
+            System.out.println("Login inexistente");
+        }
+
+    }
 
     public void aceitarSolicitaçao(Usuario usuario) {
         ArrayList<Usuario> amigosP = this.getAmigosPendentes();
@@ -239,23 +245,22 @@ public  class Usuario {
         System.out.println("SOLICITAÇÕES");
         System.out.println(amigosP.size()); // ex: 10
         System.out.println("Digite o login do usuário a ser adicionado: ");
-            String login = in.nextLine();
-            Usuario amigoEmPotencial = buscaUsuarioLogin(login, amigosP);
-            if(amigoEmPotencial != null){
-                amigos = this.getAmigos();
-                amigos.add(amigoEmPotencial);
-                amigosP.remove(amigoEmPotencial);
-                amigoEmPotencial.getAmigos().add(this); // this sou eu
-                System.out.println("Solicitação aceita");
-                System.out.println("Convite removido");
-            }else{
-                System.out.println("Login inexistente");
-            }
-
+        String login = in.nextLine();
+        Usuario amigoEmPotencial = buscaUsuarioLogin(login, amigosP);
+        if (amigoEmPotencial != null) {
+            amigos = this.getAmigos();
+            amigos.add(amigoEmPotencial);
+            amigosP.remove(amigoEmPotencial);
+            amigoEmPotencial.getAmigos().add(this); // this sou eu
+            System.out.println("Solicitação aceita");
+            System.out.println("Convite removido");
+        } else {
+            System.out.println("Login inexistente");
         }
 
+    }
 
-public void exibeRecados(Usuario c){
+    public void exibeRecados(Usuario c) {
         System.out.println(c.getRecados());
     }
 
@@ -266,15 +271,17 @@ public void exibeRecados(Usuario c){
         System.out.println("3 - ACEITAR SOLICITAÇÕES DE AMIZADE");
         System.out.println("4 - ENVIAR RECADOS");
         System.out.println("5 - EXIBIR RECADOS");
-        System.out.println("6 - EXIBIR MURAL");
-        System.out.println("7 - ENCERRAR SESSÃO");
+        System.out.println("6 - ENVIAR MENSAGEM - MURAL");
+        System.out.println("7 - ACEITAR MENSAGEM - MURAL");
+        System.out.println("8 - EXIBIR MURAL");
+        System.out.println("0 - ENCERRAR");
     }
 
     public void criaConta(List<Usuario> usuarios) {
         Scanner entrada = new Scanner(System.in);
         System.out.println("Informe seu login: ");
         String login = entrada.nextLine();
-        if (buscaUsuarioLogin(login,usuarios) == null) {
+        if (buscaUsuarioLogin(login, usuarios) == null) {
             System.out.println("Digite sua senha: ");
             String senha = entrada.nextLine();
             System.out.println("Digite o seu nome: ");
@@ -293,6 +300,7 @@ public void exibeRecados(Usuario c){
             System.out.println("Login existente!");
         }
     }
+
     public static Usuario buscaUsuarioLogin(String login, List<Usuario> usuarios) {
         if (usuarios != null) {
             for (int i = 0; i < usuarios.size(); i++) {
@@ -302,9 +310,9 @@ public void exibeRecados(Usuario c){
             }
         }
         return null;
-        
 
     }
+
     public static Usuario buscaUsuarioSenha(String senha, List<Usuario> usuarios) {
         if (usuarios != null) {
             for (int i = 0; i < usuarios.size(); i++) {
@@ -315,28 +323,30 @@ public void exibeRecados(Usuario c){
         }
         return null;
     }
-    public static Recado buscaUsuarioRecado(String login, List<Recado> msgMuralPendente) {  
-     if (msgMuralPendente != null) {
+    public static Recado buscaUsuarioRecado(String login, List<Recado> msgMuralPendente) {
+        if (msgMuralPendente != null) {
             for (int i = 0; i < msgMuralPendente.size(); i++) {
-                if (msgMuralPendente.get(i).emitente.equals(login)) { 
+                if (msgMuralPendente.get(i).emitente.equals(login)) {
                     return msgMuralPendente.get(i);
                 }
             }
         }
         return null;
-    
 
-}
+    }
     public Usuario acessaConta(Usuario cad, List<Usuario> usuarios) {
         if (usuarios.contains((cad))) {
             System.out.println("Acessando perfil...");
             return cad;
         } else {
-            return null; 
+            return null;
         }
     }
-   
-    public void contaAcessada( Usuario logado, List<Usuario> usuarios) {
+
+    public void contaAcessada(Usuario logado, List<Usuario> usuarios, Usuario mural) {
+        
+        //criei um objeto que serve apenas para exibir mensagens do mural, ou seja,
+        //toda vez que alguém for enviar uma mensagem para o mural será enviada para esse objeto
         Scanner in = new Scanner(System.in);
         int op;
         String meuLogin = logado.getLogin();
@@ -352,35 +362,78 @@ public void exibeRecados(Usuario c){
                     enviarSolicitação(usuarios);
                     break;
                 case 3:
-                     aceitarSolicitaçao(logado);
+                    aceitarSolicitaçao(logado);
                     break;
                 case 4:
-                     enviaRecados(usuarios);
+                    enviaRecados(usuarios);
                     break;
                 case 5:
                     exibeRecados(logado);
                     break;
-                case 6: exibeMural (recados);
-                   break;
+                case 6:
+                    Scanner entrada = new Scanner(System.in);
+                    System.out.println("Informe o login do usuário a receber um mural: ");
+                    String login = entrada.nextLine();
+                    Usuario usu = buscaUsuarioLogin(login, usuarios); // ve se usu existe ou não
+                    if (usu != null) { //existe!
+                        System.out.println("OBS: Essa mensagem irá pro mural caso o destinatário aceite-a.");
+                        System.out.println("Informe a mensagem que deseja enviar para o usuário aceitar: ");
+                        String msgMural = entrada.nextLine();
+                        in.nextLine();
+                        ArrayList<Recado> enviaMsgMural = usu.getMsgMuralPendente(); //pega a lista de mensagens pendentes do usu para o mural
+                        Recado rec = new Recado(msgMural, this.getLogin()); // cria um recado que recebe a mensagem e o login do emitente
+                        enviaMsgMural.add(rec); // adiciona esse recado a lista de mensagens pendentes do usu para o mural
+                        System.out.println("Mensagem enviada!");
+                        System.out.println(rec);
+                    } else {
+                        System.out.println("Login inválido");
+                    }
+                    break;
+                case 7:
+                    ArrayList<Recado> mensagensP = this.getMsgMuralPendente();
+                    Scanner z = new Scanner(System.in);
+                    System.out.println("MENSAGENS");
+                    System.out.println(this.getMsgMuralPendente()); //exibe as mensagens que eu(this) possuo para aceitar
+                    System.out.println("OBS: Assim que a mensagem for aceita, ela irá para o mural.");
+                    System.out.println("Informe o login do usuário que lhe enviou uma mensagem:");
+                    String login1 = z.nextLine();
+                    Recado usu1 = buscaUsuarioRecado(login1, mensagensP); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
+                    if (usu1 == null) {
+                        System.out.println("Login inválido.");
+                    } else {
+                        ArrayList<Recado> enviaMural = mural.getMsgMural(); //pega a lista do objeto q eu criei
+                        System.out.println(enviaMural);
+                        enviaMural.add(usu1); 
+                        mensagensP.remove(usu1);
+                        System.out.println("Mensagem enviada ao mural!");
+                    }
+                    break;
+                case 8:
+                    System.out.println(mural.getMsgMural());
+                    break;
+
             }
-        } while (op != 6);
+        } while (op != 0);
     }
-    public void enviaRecados(List<Usuario> usuarios){
+
+    public void enviaRecados(List<Usuario> usuarios) {
         Scanner in = new Scanner(System.in);
         System.out.println("Informe o login do usuário a receber uma mensagem: ");
         String login = in.nextLine();
         Usuario usu = buscaUsuarioLogin(login, usuarios);
-        if(usu != null){
+        if (usu != null) {
             System.out.println("Informe o recado que deseja enviar: ");
             String recado = in.nextLine();
             ArrayList<Recado> recados = usu.getRecados();
             Recado rec = new Recado(recado, this.getLogin());
             recados.add(rec);
             System.out.println("Recado enviado!");
-        }else{
+        } else {
             System.out.println("Login inválido");
-        }}
-          public void enviaMensagemMural(List<Usuario> usuarios) {
+        }
+    }
+
+    public void enviaMensagemMural(List<Usuario> usuarios) {
         Scanner in = new Scanner(System.in);
         System.out.println("Informe o login do usuário a receber um mural: ");
         String login = in.nextLine();
@@ -397,7 +450,8 @@ public void exibeRecados(Usuario c){
             System.out.println("Login inválido");
         }
     }
-        public void aceitaMensagemMural(Usuario usuario){
+
+    public void aceitaMensagemMural(Usuario usuario, List<Usuario> usuarios) {
         ArrayList<Recado> mensagensP = this.getMsgMuralPendente();
         Scanner in = new Scanner(System.in);
         System.out.println("MENSAGENS");
@@ -405,24 +459,23 @@ public void exibeRecados(Usuario c){
         System.out.println("OBS: Assim que a mensagem for aceita, ela irá para o mural.");
         System.out.println("Informe o login do usuário que lhe enviou uma mensagem:");
         String login = in.nextLine();
-        Recado usu = buscaUsuarioRecado(login, mensagensP ); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
-        if(usu == null){
+        Recado usu = buscaUsuarioRecado(login, mensagensP); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
+        if (usu == null) {
             System.out.println("Login inválido.");
-        }else{
+        } else {
+
+            ArrayList<Recado> mural = msgMural;
             msgMural.add(usu); //adiciona o usu(que possui login e senha) ao atributo mural que é visivel a todos
             mensagensP.remove(usu); //remove a mensagem pendente de usu da minha lista
             System.out.println("Mensagem enviada ao mural!");
         }
     }
-    public void exibeMural(){
+
+    public void exibeMural(Usuario usuario) {
         System.out.println("BEM VINDO AO MURAL");
-        System.out.println(msgMural); //exibe o atributo msgMural que contem todas as mensagens que foram enviadas para esse atributo
-                                     
+        System.out.println(usuario.getMsgMural()); //exibe o atributo msgMural que contem todas as mensagens que foram enviadas para esse atributo
     }
-    
- 
-
-
+}
 }
   // enviar/ aceitar e visualizar mensagem mural
   // procurar login e mandar mensagem
