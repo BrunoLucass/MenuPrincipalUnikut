@@ -1,3 +1,14 @@
+  // ADICIONANDO A OPCAO DE MURAL 
+  // enviar/ aceitar e visualizar mensagem mural
+  // procurar login e mandar mensagem
+  // aceitar ou recusar mensagem 
+  // exibir mural
+  // busca de login existe na minha lista de recados pendentes para enviar pro mural
+  
+
+// Novo tipo de mensagem, chamada Mural. Essa nova mensagem deve ser tratada como uma mensagem comum. 
+// Contudo, uma vez aceita pelo usuário que recebeu, ela pode ser vista por todos os outros usuários (mas não editada).
+
 package provap3;
 
 import java.util.ArrayList;
@@ -477,12 +488,4 @@ public class Usuario {
     }
 }
 }
-  // enviar/ aceitar e visualizar mensagem mural
-  // procurar login e mandar mensagem
-  // aceitar ou recusar mensagem 
-  // exibir mural
-  // busca de login existe na minha lista de recados pendentes 
-  //para enviar pro mural
-
-// Novo tipo de mensagem, chamada Mural. Essa nova mensagem deve ser tratada como uma mensagem comum. 
-// Contudo, uma vez aceita pelo usuário que recebeu, ela pode ser vista por todos os outros usuários (mas não editada).
+  
