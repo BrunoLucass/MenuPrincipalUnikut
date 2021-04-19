@@ -26,10 +26,10 @@ public class Usuario {
     protected ArrayList<Usuario> amigos = new ArrayList<>();
     protected ArrayList<Usuario> amigosPendentes = new ArrayList<>();
     protected ArrayList<Recado> recados = new ArrayList<>();
-    protected ArrayList<Recado> msgMuralPendente = new ArrayList<>();
+    protected ArrayList<Recado> msgMuralPendente = new ArrayList<>(); // criei os arraylist
     protected ArrayList<Recado> msgMural = new ArrayList<>();
 
-    public Usuario(String login, String senha, String nome, String bio) {
+    public Usuario(String login, String senha, String nome, String bio) { // construtor 
         this.setLogin(login);
         this.setSenha(senha);
         this.setNome(nome);
@@ -45,7 +45,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public ArrayList<Recado> getMsgMuralPendente() {
+    public ArrayList<Recado> getMsgMuralPendente() { // get 
         return msgMuralPendente;
     }
 
@@ -355,9 +355,8 @@ public class Usuario {
     }
 
     public void contaAcessada(Usuario logado, List<Usuario> usuarios, Usuario mural) {
+
         
-        //criei um objeto que serve apenas para exibir mensagens do mural, ou seja,
-        //toda vez que alguém for enviar uma mensagem para o mural será enviada para esse objeto
         Scanner in = new Scanner(System.in);
         int op;
         String meuLogin = logado.getLogin();
@@ -382,42 +381,10 @@ public class Usuario {
                     exibeRecados(logado);
                     break;
                 case 6:
-                    Scanner entrada = new Scanner(System.in);
-                    System.out.println("Informe o login do usuário a receber um mural: ");
-                    String login = entrada.nextLine();
-                    Usuario usu = buscaUsuarioLogin(login, usuarios); // ve se usu existe ou não
-                    if (usu != null) { //existe!
-                        System.out.println("OBS: Essa mensagem irá pro mural caso o destinatário aceite-a.");
-                        System.out.println("Informe a mensagem que deseja enviar para o usuário aceitar: ");
-                        String msgMural = entrada.nextLine();
-                        in.nextLine();
-                        ArrayList<Recado> enviaMsgMural = usu.getMsgMuralPendente(); //pega a lista de mensagens pendentes do usu para o mural
-                        Recado rec = new Recado(msgMural, this.getLogin()); // cria um recado que recebe a mensagem e o login do emitente
-                        enviaMsgMural.add(rec); // adiciona esse recado a lista de mensagens pendentes do usu para o mural
-                        System.out.println("Mensagem enviada!");
-                        System.out.println(rec);
-                    } else {
-                        System.out.println("Login inválido");
-                    }
+                    enviaMensagemMural(usuarios);
                     break;
                 case 7:
-                    ArrayList<Recado> mensagensP = this.getMsgMuralPendente();
-                    Scanner z = new Scanner(System.in);
-                    System.out.println("MENSAGENS");
-                    System.out.println(this.getMsgMuralPendente()); //exibe as mensagens que eu(this) possuo para aceitar
-                    System.out.println("OBS: Assim que a mensagem for aceita, ela irá para o mural.");
-                    System.out.println("Informe o login do usuário que lhe enviou uma mensagem:");
-                    String login1 = z.nextLine();
-                    Recado usu1 = buscaUsuarioRecado(login1, mensagensP); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
-                    if (usu1 == null) {
-                        System.out.println("Login inválido.");
-                    } else {
-                        ArrayList<Recado> enviaMural = mural.getMsgMural(); //pega a lista do objeto q eu criei
-                        System.out.println(enviaMural);
-                        enviaMural.add(usu1); 
-                        mensagensP.remove(usu1);
-                        System.out.println("Mensagem enviada ao mural!");
-                    }
+                    aceitaMensagemMural(logado,usuarios,mural);
                     break;
                 case 8:
                     System.out.println(mural.getMsgMural());
@@ -445,47 +412,48 @@ public class Usuario {
     }
 
     public void enviaMensagemMural(List<Usuario> usuarios) {
-        Scanner in = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
         System.out.println("Informe o login do usuário a receber um mural: ");
-        String login = in.nextLine();
+        String login = entrada.nextLine();
         Usuario usu = buscaUsuarioLogin(login, usuarios); // ve se usu existe ou não
         if (usu != null) { //existe!
             System.out.println("OBS: Essa mensagem irá pro mural caso o destinatário aceite-a.");
             System.out.println("Informe a mensagem que deseja enviar para o usuário aceitar: ");
-            String msgMural = in.nextLine();
+            String msgMural = entrada.nextLine();
+            entrada.nextLine();
             ArrayList<Recado> enviaMsgMural = usu.getMsgMuralPendente(); //pega a lista de mensagens pendentes do usu para o mural
             Recado rec = new Recado(msgMural, this.getLogin()); // cria um recado que recebe a mensagem e o login do emitente
             enviaMsgMural.add(rec); // adiciona esse recado a lista de mensagens pendentes do usu para o mural
             System.out.println("Mensagem enviada!");
+            System.out.println(rec);
         } else {
             System.out.println("Login inválido");
         }
     }
 
-    public void aceitaMensagemMural(Usuario usuario, List<Usuario> usuarios) {
+    public void aceitaMensagemMural(Usuario usuario, List<Usuario> usuarios, Usuario mural) {
         ArrayList<Recado> mensagensP = this.getMsgMuralPendente();
-        Scanner in = new Scanner(System.in);
-        System.out.println("MENSAGENS");
-        System.out.println(this.getMsgMuralPendente()); //exibe as mensagens que eu(this) possuo para aceitar
-        System.out.println("OBS: Assim que a mensagem for aceita, ela irá para o mural.");
-        System.out.println("Informe o login do usuário que lhe enviou uma mensagem:");
-        String login = in.nextLine();
-        Recado usu = buscaUsuarioRecado(login, mensagensP); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
-        if (usu == null) {
-            System.out.println("Login inválido.");
-        } else {
-
-            ArrayList<Recado> mural = msgMural;
-            msgMural.add(usu); //adiciona o usu(que possui login e senha) ao atributo mural que é visivel a todos
-            mensagensP.remove(usu); //remove a mensagem pendente de usu da minha lista
-            System.out.println("Mensagem enviada ao mural!");
-        }
+                    Scanner z = new Scanner(System.in);
+                    System.out.println("MENSAGENS");
+                    System.out.println(this.getMsgMuralPendente()); //exibe as mensagens que eu(this) possuo para aceitar
+                    System.out.println("OBS: Assim que a mensagem for aceita, ela irá para o mural.");
+                    System.out.println("Informe o login do usuário que lhe enviou uma mensagem:");
+                    String login1 = z.nextLine();
+                    Recado usu1 = buscaUsuarioRecado(login1, mensagensP); //ve se esse usu existe na minha lista de mensagens pendentes para o mural
+                    if (usu1 == null) {
+                        System.out.println("Login inválido.");
+                    } else {
+                        ArrayList<Recado> enviaMural = mural.getMsgMural(); //pega a lista do objeto q eu criei (mural, q ta criado no main)
+                        System.out.println(enviaMural);
+                        enviaMural.add(usu1);  //envia o recado encontrado a lista de recados do mural, q assim todos podem ver
+                        mensagensP.remove(usu1);
+                        System.out.println("Mensagem enviada ao mural!");
+                    }
     }
 
     public void exibeMural(Usuario usuario) {
         System.out.println("BEM VINDO AO MURAL");
         System.out.println(usuario.getMsgMural()); //exibe o atributo msgMural que contem todas as mensagens que foram enviadas para esse atributo
+
     }
 }
-}
-  
